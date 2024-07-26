@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <title>Document</title>
+  </head>
+  <body>
+<p> <a href="/">HOME</a></p>
+    <h2>Playlist</h2>
+    <b>Nome: {{playuser.play.nome}}</b>
+
+    <p>Descrição: {{playuser.play.desc}}</p>
+
+    <b> Meus Filmes</b>
+
+    {%for p in playlist%}
+    <p id="{{p.id}}">
+      <span
+        onclick="httprequest({{p.filme.id}})"
+        style="cursor: pointer"
+        data-bs-toggle="modal"
+        data-bs-target="#getMovie"
+      >
+        {{p.filme}}
+      </span>
+
+      <a href="/removeFilmeFromPlaylist/{{p.id}}/" class="btn btn-danger"
+        >Remover</a
+      >
+
+      
+      {% if p.filme.nome in assistido%}
+
+      <input type="checkbox" name="" id="" onclick="desassistido({{p.filme.id}})" checked >
+      {%else %}
+      <input type="checkbox" name="" id="" onclick="assistido({{p.filme.id}})" >
+      {%endif%}
+    </p>
+
+    {%endfor%}
+
+    <form action="/addFilmePlaylist/{{playuser.id}}/" method="post">
+      <fieldset>
+        <legend>Adicionar Filme a playlist</legend>
+        {% csrf_token %}
+        <div class="mb-3">
+          <select
+            class="form-select"
+            style="width: 50%"
+            name="filme"
+            id="filme"
+          >
+            {%for f in allMovies%}
+            <option value="{{f.id}}">{{f}}</option>
+
+            {%endfor%}
+          </select>
+        </div>
+
+        <input class="btn btn-primary" type="submit" value="Adicionar Genero" />
+      </fieldset>
+    </form>
+
+    {% include 'modal.html' with id='getMovie'%}
+    {% include 'modal.html' with id='addMovie'%}
+
+    <script>
+      async function httprequest(id) {
+        const url = `http://127.0.0.1:8000/getMovieInfo/${id}/`;
+
+        fetch(url, {
+          method: "GET",
+          headers: { "Content-type": "application/json;charset=UTF-8" },
+        })
+          .then((response) => response.json())
+          .then((response) => pegar(response, id))
+          .catch((error) => console.error('error: '+error));
+      }
+
+      function editaFilme() {
+        let ver = document.querySelector("#ver");
+        let filme = document.querySelector("#getFilme");
+        let duracao = document.querySelector("#getDuracao");
+        let vermais = document.querySelector("#verMais");
+        filme = filme.innerText;
+        duracao = duracao.innerText;
+        console.log(filme);
+        console.log(duracao);
+
+        html = `
+                    
+                    <label for="nome">nome</label><br>
+                        <input type="text" id="nome" name="nome" value="${filme}"><br>
+                        <label for="duracao">duracao</label><br>
+                        <input type="number" id="duracao" name="duracao" value="${duracao}"><br><br>
+                        <p id='verMais'> ${vermais.innerHTML} </p>
+                    `;
+        ver.innerHTML = html;
+      }
+      async function pegar(resposta, id) {
+        let mostrar = document.querySelector("#ver");
+        let edita = document.querySelector("#edita");
+        let remove = document.querySelector("#remove");
+        let form = document.querySelector("#form");
+        let link = document.querySelector("#linkbutton");
+        console.log(resposta);
+        const href = { remove: "removeFilme/", edita: "edita/" };
+        const url = `/getMovieInfoComplete/${id}`;
+        saida = `
+                         
+                            <b> filme </b> 
+                            <p id="getFilme">${resposta.filme}</p>
+                            <b> duração </b>
+                            <p id="getDuracao"> ${resposta.duracao} </p>
+                       
+                        
+                    `;
+        link.href=url
+        link.innerText="Ver mais"
+        mostrar.innerHTML = saida;
+      }
+    </script>
+    <script>
+
+    
+      async function assistido(id){
+          const url = `http://127.0.0.1:8000/filmeAssistido/${id}/`;
+  
+          fetch(url,  {
+          
+            method: "GET",
+            headers: { "Content-type": "application/json;charset=UTF-8" },
+          
+        })
+            .then((response) => response.json())
+            .then((response) => console.log(response))
+            .catch((error) => console.error('error: '+error));
+        }
+        
+       async function desassistido(id){
+          const url = `http://127.0.0.1:8000/filmeDesassistido/${id}/`;
+           fetch(url,  {
+          
+            method: "GET",
+            headers: { "Content-type": "application/json;charset=UTF-8" },
+          
+        })
+          .then((response) => response.json())
+          .then((response) => console.log(response))
+          .catch((error) => console.error('error: '+error));
+
+        }
+      
+
+      
+
+    </script>
+    {%include 'bootstrapJS.html'%}
+  </body>
+</html>

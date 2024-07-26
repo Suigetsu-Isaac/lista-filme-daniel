@@ -1,0 +1,66 @@
+
+  <div class="modal fade" id='{{id}}' tabindex="-1" aria-labelledby='{{id}}Label' aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id='{{id}}Label'>Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+                {% if id == 'getMovie' %}
+                <div class="modal-body">
+                <p id="ver">
+                </p>
+                <a id="remove" ></a> 
+                <a href="#" id="edita" onclick="editaFilme()"></a>
+                
+                <div class="modal-footer">
+              
+                  <a id="linkbutton" type="submit" class="btn btn-primary px-5">enviar</a>
+                  </div>
+                <div> 
+              {% endif %} 
+               
+              {% if id == 'addMovie' %}
+                <form action="/addFilme/" id="form" class="modal-body" method="POST">
+                  {% csrf_token %}
+                <label for="nome">nome</label><br>
+                    <input type="text" id="nome" name="nome"><br>
+                    <label for="duracao">duracao</label><br>
+                <input type="number" id="duracao" name="duracao"><br><br>
+                
+              {%elif id == 'addPlaylist'%}
+
+                <p>Add Playlist</p>
+                <form action="/addPlaylist/{{user.id}}/" id="form" class="modal-body"  method="post">
+                    {% csrf_token %}
+                    <p>Nome</p>
+                    <input type="text" name="nome" id="nome">
+                    <p>Desc</p>
+                    <textarea name="desc" id="desc"></textarea>
+               
+
+              {%elif id == 'editPlaylist'%}
+
+                <p>Edit Playlist</p>
+                <form action="/editPlaylist/{{user.id}}/" id="editPlaylistForm" class="modal-body"  method="post">
+                    {% csrf_token %}
+                    <p>Nome</p>
+                    <input type="text" name="nome" id="editnome">
+                    <p>Desc</p>
+                    <textarea name="desc" id="editdesc"></textarea>
+                    
+              {%endif%}
+
+               
+                {% if id != 'getMovie' %}
+                <div class="modal-footer">
+              
+                    <button type="submit" class="btn btn-primary px-5">enviar</button>
+                </div>
+                {%endif%}
+                
+        </form> 
+          </div>
+        </div>
+</div>
