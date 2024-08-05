@@ -5,6 +5,7 @@ from .pages.login import loginURL
 from .pages.playlist import playlistURL
 from .pages.userprofile import urls
 from .pages.avaliacao import urlavalicao
+from .pages.postagem import postagem
 urlpatterns =[
     path("",views.index,name="index"),
     path("addFilme/",views.addFilme,name="addFilme"),
@@ -23,3 +24,4 @@ urlpatterns.extend(loginURL.lista)
 urlpatterns.extend(playlistURL.lista)
 urlpatterns.extend(urls.lista)
 urlpatterns.extend(urlavalicao.lista)
+urlpatterns.extend(postagem.lista)

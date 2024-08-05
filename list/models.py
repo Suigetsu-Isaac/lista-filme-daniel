@@ -1,18 +1,26 @@
 from typing import Any
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Avg
 # Create your models here.
 class Filmes(models.Model):
     nome = models.CharField(max_length=100)
     duracao = models.IntegerField()
     cover = models.ImageField(null=True, blank=True, upload_to='images/',default='/images/filme-default.png' )
+    sinopse = models.CharField(max_length=255)
     def __str__(self):
         return self.nome
 
+    @property
+    def count_avaliacoes(self):
+        return self.avaliacoes.count()
+    
+    @property
+    def media_notas(self):
+        return self.avaliacoes.aggregate(Avg('nota'))['nota__avg']
 
 class Genero(models.Model):
     nome = models.CharField(max_length=100)
-    
     def __str__(self):
         return self.nome
 
@@ -24,16 +32,17 @@ class GeneroFilme(models.Model):
    
 class PlataformaStreaming(models.Model):
     nome = models.CharField(max_length=50)
-    
+    logo = models.ImageField(null=True, blank=True, upload_to='images/',default='/images/filme-default.png' )
     def __str__(self):
         return self.nome
 
 class PlataformaStreamingFilme(models.Model):
     filme = models.ForeignKey(Filmes,on_delete=models.CASCADE)
     plataforma = models.ForeignKey(PlataformaStreaming,on_delete=models.CASCADE)
-
+    urlFilme= models.CharField(max_length=100)
     def __str__(self):
-        return self.filme.__str__()+" - "+self.plataforma.__str__()
+        return self.filme.__str__()+" - "+self.plataforma.__str__()+' se encontra em: '+self.urlFilme
+
 
 class Playlist(models.Model):
     nome = models.CharField(max_length=100)
@@ -76,18 +85,19 @@ class SkinUser(models.Model):
 
    
 
+
 class Avaliacao(models.Model):
     comentario = models.CharField(max_length=255)
-    nota = models.IntegerField()  
-    filme = models.ForeignKey(Filmes,on_delete=models.CASCADE,null=True)
+    nota = models.IntegerField() 
+    filme = models.ForeignKey(Filmes,on_delete=models.CASCADE,related_name='avaliacoes')
     skin = models.ForeignKey(SkinUser,on_delete=models.CASCADE, null=True)
-
-   
-   
+    created_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         print(self.skin)
-        return f"nota: {self.nota} - {self.comentario} de {self.filme} por {self.skin}"
+        return f"nota: {self.nota} - {self.comentario} de {self.filme.nome} por {self.skin}"
     
+    class Meta:
+        unique_together = ('filme', 'skin')
 
 class LikeDislike(models.Model):
     LIKE = 1
@@ -114,3 +124,4 @@ class Seguir(models.Model):
     
     def __str__(self):
         return f'{self.follower} está seguindo {self.followed}' 
+

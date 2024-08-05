@@ -1,0 +1,62 @@
+<!-- Antiga relacao das postagens -->
+<div class="grid-container">
+
+    {% for a in ava %}
+
+    <div class="card grid-item d-flex" style="width: 30vw; justify-content: space-evenly;">
+        <a href="/avaliacao/{{a.id}}" style="text-decoration: none; color:black;">
+            <div id='ladoE' class="col" style="background-image: url({{a.filme.cover.url}}); background-size: cover ;height: 300px; display: flex;">
+                <div style=" display:flex; background-color: rgba(0, 0, 0, 0.2); flex:1; align-items: flex-end; justify-content: center; color: white; ">
+                    <div style="background-color: rgba(0, 0, 0, 0.8); width: 100%;">
+                <p><b>{{a.filme}}</b></p>
+                </div>
+                </div>
+
+
+            </div>
+        </a>
+        <div id='ladoD' class="col"
+            style=" background: rgba(180, 255, 255, 0.5);  align-items: center; justify-content: center;">
+
+
+            {%if a.comentario|length > 60 %}
+            <p> {{a.comentario|slice:"0:57"}}... </p>
+            {%else%}
+            <p> {{a.comentario}} </p>
+            {%endif%}
+            <input type="range" min='1' max='5' readonly value="{{a.nota}}" style="width: 80%;" />
+            <div style='display: flex; justify-content: space-between; align-items: center; background: green;'>
+                <figure style="display: flex; padding-top: 16px;">
+
+                    <a class="fir-imageover" href="/users/{{a.skin.id}}"
+                        style="text-decoration: none; color:#000; margin: auto; ">
+                        <img style="border-radius: 2rem;" src='{{a.skin.img.url}}' width='64px' height='64px'
+                            alt="Imagem do usuario">
+                        <figcaption>
+                            <p>{{a.skin.usuario}}</p>
+                        </figcaption>
+                </figure>
+                </a>
+               
+
+                    
+                    {% csrf_token %}
+                                           
+                    <div
+                    style="display: flex; justify-content: space-around; align-items: center; width: 60%; padding-right: 8px; ">
+                        <div style="display: flex; flex-direction: column;">
+                        <i onclick="likePost('{{ a.id }}')" id="like" class="fa fa-thumbs-up"></i>
+                        <span id="like-count-{{ a.id }}">{{ a.like_count }}</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column;">
+                        <i onclick="dislikePost('{{ a.id }}')" id="deslike" class="fa fa-thumbs-down"></i>
+                        <span id="dislike-count-{{ a.id }}">{{ a.dislike_count }}</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {%endfor%}
+</div>

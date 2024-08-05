@@ -17,7 +17,26 @@
             background-color: #2196F3;
             padding: 4px;
         }
-
+        a {
+            text-decoration: none;
+            color: white;
+        }
+        a:hover{
+            text-decoration: underline;
+            transition: 300ms;
+            color: white;
+        }
+        #bg-img {
+            display:flex;
+            background-color: rgba(0, 0, 0, 0.2);
+            flex:1;
+          
+            border-radius: 10px;
+        }
+        #bg-img:hover{
+            background-color: rgba(0, 0, 0, 0.05);
+            transition: 300ms;
+        }
         .grid-item {
             background-color: rgba(255, 255, 255, 0.8);
             border: 1px solid rgba(0, 0, 0, 0.8);
@@ -46,120 +65,43 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <button class="navbar-toggler hidden-lg-up" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
-                aria-label="Toggle navigation"></button>
-            <div class="collapse navbar-collapse" id="collapsibleNavId">
-                <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/" aria-current="page">Index
-                            <span class="visually-hidden">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/seguindo">Seguidos</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownId">
-                            <a class="dropdown-item" href="#">Action 1</a>
-                            <a class="dropdown-item" href="#">Action 2</a>
-                        </div>
-                    </li>
-                </ul>
-                <form class="d-flex my-2 my-lg-0">
-                    <input class="form-control me-sm-2" type="text" placeholder="Search" />
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                        Search
-                    </button>
-                </form>
+  {% include 'navbar.html' %}
+
+    <main class="grid-container" style="background-color: #040404;">
+
+        {% for f in filmes %}
+   
+    <div class="card grid-item d-flex" style="width: 30vw; height: 60vh; justify-content: space-evenly; background-color: #161513; border-radius: 10px;">
+
+        
+        <a href="/postagem/{{f.id}}" id='ladoE' class="col" style="background-image: url({{f.cover.url}}); background-size: cover;  display: flex; height: 300px; border-radius: 10px;" >
+            
+            <div id="bg-img">
+                
+        
             </div>
-
-        </div>
-        <div class='d-flex'
-            style=' flex-direction: column; justify-content: space-around;align-items: center;text-align: left; width: 10vw;'>
-            <p>
-                Não é você
-            </p>
-            <p>
-                <a href="/logout/"> clique aqui </a>
-            </p>
-
-        </div>
-        {%include 'usercardTemplate.html' with s=myskin%}
-    </nav>
-
-
+            
+          
+        
+        </a>
     
-
-
-    <div class="grid-container">
-
-        {% for a in ava %}
-
-        <div class="card grid-item d-flex" style="width: 30vw; justify-content: space-evenly;">
-            <a href="/avaliacao/{{a.id}}" style="text-decoration: none; color:black;">
-                <div id='ladoE' class="col" style="background-image: url({{a.filme.cover.url}}); background-size: cover ;height: 300px; display: flex;">
-                    <div style=" display:flex; background-color: rgba(0, 0, 0, 0.2); flex:1; align-items: flex-end; justify-content: center; color: white; ">
-                        <div style="background-color: rgba(0, 0, 0, 0.8); width: 100%;">
-                    <p><b>{{a.filme}}</b></p>
-                    </div>
-                    </div>
-
-
-                </div>
-            </a>
-            <div id='ladoD' class="col"
-                style=" background: rgba(180, 255, 255, 0.5);  align-items: center; justify-content: center;">
-
-
-                {%if a.comentario|length > 60 %}
-                <p> {{a.comentario|slice:"0:57"}}... </p>
-                {%else%}
-                <p> {{a.comentario}} </p>
-                {%endif%}
-                <input type="range" min='1' max='5' readonly value="{{a.nota}}" style="width: 80%;" />
-                <div style='display: flex; justify-content: space-between; align-items: center; background: green;'>
-                    <figure style="display: flex; padding-top: 16px;">
-
-                        <a class="fir-imageover" href="/users/{{a.skin.id}}"
-                            style="text-decoration: none; color:#000; margin: auto; ">
-                            <img style="border-radius: 2rem;" src='{{a.skin.img.url}}' width='64px' height='64px'
-                                alt="Imagem do usuario">
-                            <figcaption>
-                                <p>{{a.skin.usuario}}</p>
-                            </figcaption>
-                    </figure>
-                    </a>
-                   
-
-                        
-                        {% csrf_token %}
-                                               
-                        <div
-                        style="display: flex; justify-content: space-around; align-items: center; width: 60%; padding-right: 8px; ">
-                            <div style="display: flex; flex-direction: column;">
-                            <i onclick="likePost('{{ a.id }}')" id="like" class="fa fa-thumbs-up"></i>
-                            <span id="like-count-{{ a.id }}">{{ a.like_count }}</span>
-                            </div>
-                            <div style="display: flex; flex-direction: column;">
-                            <i onclick="dislikePost('{{ a.id }}')" id="deslike" class="fa fa-thumbs-down"></i>
-                            <span id="dislike-count-{{ a.id }}">{{ a.dislike_count }}</span>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
+    <aside style="color:white; align-items: center; justify-content: center; padding: 4px;">
+        
+        <div style="display: flex;justify-content: space-evenly; margin-top: 4px; margin-bottom: 4px;">
+            <span> Comentario {{f.count_avaliacoes}}</span>
+        <span> Nota {{f.media_notas|default:0}}</span>
         </div>
 
-        {%endfor%}
+        <div style="margin-top: 8px;">
+        <p><b> <a href="/postagem/{{f.id}}">{{f.nome}}</a> </b></p>
     </div>
+        
+    </aside>
+</div>
+    
+{%endfor%}
 
-
-
-
+</main>
 
     
 
@@ -167,65 +109,7 @@
 
 
     {%include 'bootstrapJS.html'%}
-    <script>
-    let like = document.getElementById('like')
-    let deslike = document.getElementById('deslike')
-    function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-    function likePost(avaId) {
-    
-      
-    fetch(`/like/${avaId}/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
-        },
-        body: JSON.stringify({})
-    })
-    .then(response => response.json())
-    .then(data => updateCounts(avaId, data));
-}
-
-function dislikePost(avaId) {
-    
- 
-    fetch(`/dislike/${avaId}/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
-        },
-        body: JSON.stringify({})
-    })
-    .then(response => response.json())
-    .then(data => updateCounts(avaId, data));
-}
-
-function updateCounts(avaId, data) {
-    fetch(`/ava/${avaId}/counts/`)
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById(`like-count-${avaId}`).innerText = data.likes;
-        document.getElementById(`dislike-count-${avaId}`).innerText = data.dislikes;
-    });
-}
-
-
-    </script>
+   
 </body>
 
 </html>

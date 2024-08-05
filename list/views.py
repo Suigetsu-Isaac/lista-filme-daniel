@@ -9,7 +9,8 @@ def index(req,context={}):
    
     ava = Avaliacao.objects.all()
     myskin = SkinUser.objects.get(usuario__id = req.user.id)
-   
+    filmes = Filmes.objects.all()
+    context['filmes']=filmes
     allSkins = SkinUser.objects.all()
     print(ava)
     

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil do Usuário</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <style>
+    .profile-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .profile-header img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .carousel-item img {
+      height: 300px;
+      width: 190px;
+      object-fit: cover;
+    }
+    .carousel-inner {
+      display: flex;
+    }
+    .carousel-item {
+      display: flex;
+      justify-content: center;
+    }
+    .carousel-item .d-flex {
+      flex-wrap: nowrap;
+    }
+    .carousel-item .d-inline-block {
+      margin: 0 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="profile-header">
+      <img src="../media/images/profile-pic.png" alt="Foto de Perfil">
+      <h1>Nome do Usuário</h1>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Seguindo</h3>
+        <ul class="list-unstyled">
+          <li>Pessoa 1</li>
+          <li>Pessoa 2</li>
+          <li>Pessoa 3</li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h3>Seguidores</h3>
+        <ul class="list-unstyled">
+          <li>Seguidor 1</li>
+          <li>Seguidor 2</li>
+          <li>Seguidor 3</li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h3>Playlists</h3>
+        <ul class="nav nav-tabs" id="playlistTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="playlist1-tab" data-bs-toggle="tab" data-bs-target="#playlist1" type="button" role="tab" aria-controls="playlist1" aria-selected="true">Playlist 1</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="playlist2-tab" data-bs-toggle="tab" data-bs-target="#playlist2" type="button" role="tab" aria-controls="playlist2" aria-selected="false">Playlist 2</button>
+          </li>
+        </ul>
+        <div class="tab-content" id="playlistTabContent">
+          <div class="tab-pane fade show active" id="playlist1" role="tabpanel" aria-labelledby="playlist1-tab">
+            <div id="carousel1" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="d-flex">
+                    <div class="d-inline-block">
+                      <img src="../media/images/filme-default.png" alt="Filme 1">
+                      <div class="text-center mt-2">
+                        <h6>Filme 1</h6>
+                      </div>
+                    </div>
+                    <div class="d-inline-block">
+                      <img src="../media/images/filme-default.png" alt="Filme 2">
+                      <div class="text-center mt-2">
+                        <h6>Filme 2</h6>
+                      </div>
+                    </div>
+                    <div class="d-inline-block">
+                      <img src="../media/images/filme-default.png" alt="Filme 3">
+                      <div class="text-center mt-2">
+                        <h6>Filme 3</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="d-flex">
+                    <div class="d-inline-block">
+                      <img src="../media/images/filme-default.png" alt="Filme 4">
+                      <div class="text-center mt-2">
+                        <h6>Filme 4</h6>
+                      </div>
+                    </div>
+                    <div class="d-inline-block">
+                      <img src="../media/images/filme-default.png" alt="Filme 5">
+                      <div class="text-center mt-2">
+                        <h6>Filme 5</h6>
+                      </div>
+                    </div>
+                    <div class="d-inline-block">
+                      <img src="../media/images/filme-default.png" alt="Filme 6">
+                      <div class="text-center mt-2">
+                        <h6>Filme 6</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carousel1" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carousel1" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="playlist2" role="tabpanel" aria-labelledby="playlist2-tab">
+            <!-- Adicione o carrossel para a Playlist 2 aqui, seguindo o mesmo formato -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>
