@@ -118,7 +118,7 @@
 
 {% include 'navbar.html' %}
 
-    <div class="container py-2 d-flex justify-content-center" style="width: 80vw;">
+    <main class="container py-2 d-flex justify-content-center" style="width: 80vw;">
         <div class="row text-white py-2 rounded-2" style="background-color: #161513; width: 100vw; justify-content: space-evenly; border-radius: 10px;">
           <div class="row mx-2 px-2">
             <div class="col justify-text " style="flex-grow: 1; background-color: #161513; height: 400px; border-top-left-radius: 10px; ">
@@ -193,7 +193,7 @@
                     <input name="nota" type="number" id="new-rating" class="form-control mb-3" min="1" max="5" placeholder="Nota (1-5)">
                     <button type="submit" class="btn btn-success" onclick="addComment()">Enviar Avaliação</button>
                 </form>
-      </div>
+      </main>
 
    {% include 'bootstrapJS.html' %}
    
