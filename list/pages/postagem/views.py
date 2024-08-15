@@ -10,6 +10,8 @@ def meta(req):
 
 @login_required(login_url='/login/')
 def createPostagem(req,pk):
+    context={}
+    filme = Filmes.objects.get(id=pk)
     comentario = req.POST['comentario']
     nota = req.POST['nota']
     user =  SkinUser.objects.get(usuario__username=req.user)  
@@ -17,12 +19,10 @@ def createPostagem(req,pk):
         ava = Avaliacao.objects.create(comentario=comentario, nota=nota, filme=filme, skin=user)
     except:
         context['error'] = 'Avaliação já foi feita'
-    return redirect(meta(req))
+    return redirect('postagem')
 
 def postagem(req,pk):
-    filme = Filmes.objects.get(id=pk)
-    context = {}
-        
+    filme = Filmes.objects.get(id=pk)     
     ava = Avaliacao.objects.filter(filme__id=pk)
     for a in ava:
         a.like_count = a.likes_dislikes.filter(vote=1).count()
@@ -33,13 +33,11 @@ def postagem(req,pk):
     print(ava)
     print(generos)
     print(plataformas)
-
-    
-    c= {
+    context= {
         'filme': filme,
         'avaliacao': ava,
         'generos' : generos,
         'plataformas':plataformas
         }
-    context.update(c)
+   
     return render(req,'postagem.html',context)
