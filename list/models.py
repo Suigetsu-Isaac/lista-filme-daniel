@@ -65,25 +65,28 @@ class PlaylistFilme(models.Model):
     def __str__(self):
         return self.play.user.__str__()+": "+self.play.play.nome + ' - ' + self.filme.nome
 
-           
-    
-class FilmesAssistidos(models.Model):
-    usuario = models.ForeignKey(User,on_delete=models.CASCADE)    
-    filme = models.ForeignKey(Filmes,on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return self.usuario.__str__()+" - "+self.filme.__str__()
-
-
 
 class SkinUser(models.Model):
-    usuario = models.ForeignKey(User,on_delete=models.CASCADE)
+    usuario = models.OneToOneField(User,on_delete=models.CASCADE)
     img = models.ImageField(null=True, blank=True, upload_to='images/',default='/images/profile-default.png')
+    bio = models.CharField(max_length=255, default=f"Olá gosto de variados generos de filmes e quero conhecer novos amigos")
     
     def __str__(self):
         return f'{self.usuario} - {self.img.name} in {self.img.url}'
 
-   
+
+
+    
+class FilmesAssistidos(models.Model):
+    usuario = models.ForeignKey(SkinUser,on_delete=models.CASCADE)    
+    filme = models.ForeignKey(Filmes,on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.usuario.usuario.__str__()+" - "+self.filme.__str__()
+
+    class Meta:
+        unique_together = ('usuario', 'filme')
+
 
 
 class Avaliacao(models.Model):

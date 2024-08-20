@@ -61,6 +61,8 @@
 <body>
 
 
+    {%include 'navbar.html'%}
+
 {{user}}
 {{skin}}
 {{playlist}}
@@ -68,7 +70,7 @@
 {{skins}}
 {{assistido}}    
     <div>
-        <p><a href="/"> HOME </a></p>
+        
 
             <img class="fir-author-image fir-clickcircle" style="border-radius: 2rem;" src='/media/{{skin.img|default:"images/profile-default.png"}}' width='64px' height='64px' alt="Imagem do usuario">
             <p>  {{user}} </p>
@@ -83,33 +85,8 @@
         <button type="submit"> salvar </button>
         </form>
 
-        <h1> Minha Playlist </h1>
-
-    {% for p in playlist %}
-  
-       <a href="/getAllMoviesByPlayList/{{p.play.id}}" style="cursor: pointer; text-decoration: none; color:black"> 
-       <b> {{ p.play.nome }} </b>
-       <p> {{ p.play.desc }}
-    </a>
-       <a href="/removePlaylist/{{p.id}}" class="btn btn-danger">Remover Playlist</a>
         
-        <button 
-        onclick="editPlaylist({{p}})" 
-        data-bs-toggle="modal" data-bs-target="#editPlaylist" class="btn btn-warning">Editar Playlist</button>
-    </p>
-       
-        
-    {% endfor %}
-    
   
-   <!-- Button trigger modal -->
-
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPlaylist">
-    Adicionar Playlist  
-</button>
-
-{% include 'modal.html' with id='addPlaylist' %}
-{% include 'modal.html' with id='editPlaylist' %}
  
 <h2>Usuários que {{ user.username }} está seguindo:</h2>
 <ul>

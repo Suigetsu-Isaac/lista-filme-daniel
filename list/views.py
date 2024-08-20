@@ -134,3 +134,22 @@ def ava_counts(request, ava_id):
     likes = ava.likes_dislikes.filter(vote=1).count()
     dislikes = ava.likes_dislikes.filter(vote=-1).count()
     return JsonResponse({'likes': likes, 'dislikes': dislikes})
+
+def navbar(req):
+    
+    try:
+        myskin = SkinUser.objects.get(usuario__id=req.user.id)
+        print('myskin',myskin)
+        dic = {
+            'id': myskin.id,
+            'img': myskin.img.url,
+            'user': myskin.usuario.username,
+            'bio': myskin.bio
+        }
+        print('dic',dic)
+
+        return JsonResponse(dic)
+    except:
+        
+        return JsonResponse({'user':None})
+    

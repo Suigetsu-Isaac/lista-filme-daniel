@@ -10,10 +10,7 @@
                     <a class="nav-link active" href="/" aria-current="page">Index
                         <span class="visually-hidden">(current)</span></a>
                 </li>
-                {%if user%}     
-                <li class="nav-item">
-                    <a class="nav-link" href="/seguindo">Seguidos</a>
-                </li>
+                
                 
             </ul>
             <form class="d-flex m-2 my-lg-0">
@@ -22,47 +19,9 @@
                     Search
                 </button>
             </form>
-            
-            <ul class="navbar-nav me-auto mt-2 mt-lg-0" style="width: 30vw; justify-content: right;">
-                <li class="nav-item dropdown" style="display: flex; justify-content: right; align-items: center;">
-                    <a class="nav-link dropdown-toggle" style="text-decoration: none;" href="#" id="dropdownId" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                    
-                            
 
-                            <img class="fir-author-image fir-clickcircle " src='{{myskin.img.url}}'  style='border-radius: 2em;' width='32px' height='32px' alt="Imagem do usuario">
-                              
-                            <label class="fig-author-figure-title">{{user}}</label>
-                                  
-                           
-                             
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="users/{{myskin.id}}">Meu Perfil</a>
-                        <a class="dropdown-item" href="/logout/">Desconectar</a>
-                    </div>
-                </li>
-            
-            </ul>
-            {%else%}
-        
-        <form class="d-flex m-2 my-lg-0">
-            <input class="form-control me-sm-2" type="text" placeholder="Search" />
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                Search
-            </button>
-        </form>
     </ul>
-            <a
-                href="/login"
-                class="btn btn-primary active"
-                role="button"
-                >
-                Faça seu Login
-                </a
-                >
-            
-            {%endif%}
+           
             
         </div>
 
@@ -71,3 +30,72 @@
       
      
 </nav>
+
+
+<script>
+
+    function getNavBar(){
+        fetch('/navbar',{
+            method:'GET',
+            headers: {
+            'Content-Type': 'application/json',
+        }
+        }).then(response => response.json())
+        .then(data => skinUser(data.id,data.img,data.user,data.bio))
+        .catch(data => skinUserDefault(data.user))
+    }
+    
+    let navId = document.querySelector('#collapsibleNavId')
+    console.log(navId)
+
+    function skinUserDefault(user){
+            const userDefaultHTML = `
+            <a
+                href="/login"
+                class="btn btn-primary active"
+                role="button"
+                >
+                Faça seu Login
+                </a
+                >
+            `
+
+           
+
+            console.log(userDefaultHTML)
+            navId.innerHTML += userDefaultHTML
+        }
+
+    function skinUser(id,img,user,bio){
+        const userHTML = `
+                <ul class="navbar-nav me-auto mt-2 mt-lg-0" style="width: 30vw; justify-content: right;">
+                <li class="nav-item dropdown" style="display: flex; justify-content: right; align-items: center;">
+                    <a class="nav-link dropdown-toggle" style="text-decoration: none;" href="#" id="dropdownId" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    
+                            
+
+                            <img class="fir-author-image fir-clickcircle " src='${img}'  style='border-radius: 2em;' width='32px' height='32px' alt="Imagem do usuario">
+                              
+                            <label class="fig-author-figure-title">${user}</label>
+                                  
+                           
+                             
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownId">
+                        <a class="dropdown-item" href="/users/${id}">Meu Perfil</a>
+                        <a class="dropdown-item" href="/logout/">Desconectar</a>
+                    </div>
+                </li>
+            
+            </ul>
+            `
+            console.log(userHTML)
+            navId.innerHTML+=userHTML
+    }
+    getNavBar()
+    
+
+
+
+</script>

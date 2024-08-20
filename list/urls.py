@@ -16,7 +16,7 @@ urlpatterns =[
     path('like/<int:ava_id>/', views.like_dislike, {'vote_type': 1}, name='like'),
     path('dislike/<int:ava_id>/', views.like_dislike, {'vote_type': -1}, name='dislike'),
     path('ava/<int:ava_id>/counts/', views.ava_counts, name='ava_counts'),
-    
+    path('navbar',views.navbar,name='navbar')
 ]
 
 urlpatterns.extend(showMovieListURL.lista)
