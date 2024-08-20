@@ -1,31 +1,31 @@
 from list.models import Filmes,PlaylistFilme,PlaylistUser,FilmesAssistidos
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
-
+from django.contrib.auth.decorators import login_required
     
 def getAllMoviesByPlayList(req,pk):
     print(req.user)
-    assistido = FilmesAssistidos.objects.filter(usuario__username=req.user) 
-    print(assistido)
+    
     filmes = Filmes.objects.all()
     
-    playlist = PlaylistFilme.objects.filter(play__id =pk)
+    playlist = PlaylistFilme.objects.filter(play__id=pk)
     playuser = PlaylistUser.objects.get(id=pk)
     print(playlist)
     saida = []
     lista = playlist.values_list('filme__nome', flat=True)
-    assistidos = assistido.values_list('filme__nome', flat=True)
+    
     for f in filmes:
         if f.nome not in lista:
             saida.append(f)
     print(playlist.values_list('filme', flat=True))        
     print('saida: ',saida)
     
-    context={'allMovies':saida,'playuser':playuser,'lista':lista,'playlist':playlist,'assistido':list(assistidos)}
+    context={'allMovies':saida,'playuser':playuser,'lista':lista,'playlist':playlist}
    
             
     return render(req,'playlist.html',context)
 
+@login_required(login_url="/login/")
 def addFilmePlaylist(req,pk):
     play = PlaylistUser.objects.get(id=pk)
     filmeId = req.POST['filme']

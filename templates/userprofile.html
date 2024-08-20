@@ -4,11 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #040404;
+            color: white;
+        }
 
+        .card {
+            background-color: #161513;
+            color: white;
+        }
+
+        .navbar {
+            background-color: #161513; /* Se usar um navbar, aplique bg-dark ao invés disso */
+        }
+
+        .carousel-inner {
+            color: white;
+        }
+
+        .modal-content {
+            background-color: #161513;
+            color: white;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #444;
+        }
+
+        .modal-body {
+            border-top: 1px solid #444;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+    </style>
     <title>Document</title>
 </head>
 <body>
 
+
+{{user}}
+{{skin}}
+{{playlist}}
+{{seguindo}}
+{{skins}}
+{{assistido}}    
     <div>
         <p><a href="/"> HOME </a></p>
 
@@ -29,9 +87,9 @@
 
     {% for p in playlist %}
   
-       <a href="/getAllMoviesByPlayList/{{p.id}}" style="cursor: pointer; text-decoration: none; color:black"> 
-       <b> {{ p.nome }} </b>
-       <p> {{ p.desc }}
+       <a href="/getAllMoviesByPlayList/{{p.play.id}}" style="cursor: pointer; text-decoration: none; color:black"> 
+       <b> {{ p.play.nome }} </b>
+       <p> {{ p.play.desc }}
     </a>
        <a href="/removePlaylist/{{p.id}}" class="btn btn-danger">Remover Playlist</a>
         
@@ -105,6 +163,191 @@
         
         
     </div>
+
+
+    <div class="container-fluid mt-5 container-custom">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h3>Perfil do Usuário</h3>
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="{{skin.img.url}}" alt="Foto do Perfil" width="150" height="150" class="rounded-circle mb-3">
+                        <h4>{{user}}</h4>
+                        <p class="text-muted">email@exemplo.com</p>
+                        <hr>
+
+                        <!-- Biografia -->
+                        <h5>Biografia</h5>
+                        <p class="text-start">
+                           {{skin.bio}} 
+                            <hr>
+
+                        <!-- Playlists de Filmes -->
+                        <h5>Playlists de Filmes</h5>
+                        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addPlaylistModal">
+                            Adicionar Playlist
+                        </button>
+                        <div class="row">
+                            {%for p in playlist%}
+                            
+                            <div class="col-md-4">
+                                <div class="card mb-3">
+                                    <div class="card-body bg-dark" style="border-radius: 5px;">
+                                        <h6 class="card-title">{{p.play.nome}}</h6>
+                                        <p class="card-text">{{p.play.desc}}</p>
+                                        <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editPlaylistModal">
+                                            Editar
+                                        </button>
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePlaylistModal">
+                                            Remover
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            {%endfor%}
+                            <!-- Adicione mais playlists conforme necessário -->
+                        </div>
+                        <hr>
+
+                        <!-- Filmes Assistidos - Carrossel -->
+                        <h5>Filmes Assistidos</h5>
+                        <div id="carouselFilmesAssistidos" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <div class="d-flex flex-wrap justify-content-center">
+                                        <div class="p-2">
+                                            {%for a in assistido %}
+                                            <img src="{{a.filme.cover.url}}" width='150' height='150' alt="Filme 1" class="img-fluid mb-2" style='border-radius: 5px'>
+                                            <p>{{a.filme}}</p>
+                                            {%endfor %}
+                                        </div>
+                                        
+                                </div>
+                               
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselFilmesAssistidos" role="button" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Anterior</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselFilmesAssistidos" role="button" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Próximo</span>
+                            </a>
+                        </div>
+                        <hr>
+
+                        <!-- Usuários Seguindo - Carrossel -->
+                        <h5>Seguindo</h5>
+                        
+                        <div id="carouselSeguindo" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <div class="d-flex flex-wrap justify-content-center">
+                                    {% for s in skins %}
+                                        {% if s.usuario.id in seguindo %}
+                            
+                                        <div class="p-2 text-center">
+                                            <img src="{{s.img.url}}" width='100' height='100' alt="Usuário 1" class="rounded-circle mb-2">
+                                            <h6 class="card-title">{{s.usuario}}</h6>
+                                        </div>
+                                        {%endif%}
+                            {%endfor%}
+                                        
+                                </div>
+                                
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselSeguindo" role="button" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Anterior</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselSeguindo" role="button" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Próximo</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="#" class="btn btn-primary">Editar Perfil</a>
+                        <a href="#" class="btn btn-secondary">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Playlist -->
+    <div class="modal fade" id="addPlaylistModal" tabindex="-1" aria-labelledby="addPlaylistModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addPlaylistModalLabel">Adicionar Playlist</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="playlistName" class="form-label">Nome da Playlist</label>
+                            <input type="text" class="form-control" id="playlistName" placeholder="Nome da Playlist">
+                        </div>
+                        <div class="mb-3">
+                            <label for="playlistDescription" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="playlistDescription" rows="3" placeholder="Descrição da Playlist"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Playlist -->
+    <div class="modal fade" id="editPlaylistModal" tabindex="-1" aria-labelledby="editPlaylistModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPlaylistModalLabel">Editar Playlist</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="editPlaylistName" class="form-label">Nome da Playlist</label>
+                            <input type="text" class="form-control" id="editPlaylistName" value="Nome da Playlist Atual">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPlaylistDescription" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="editPlaylistDescription" rows="3">Descrição Atual</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Confirmar Remoção de Playlist -->
+    <div class="modal fade" id="deletePlaylistModal" tabindex="-1" aria-labelledby="deletePlaylistModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deletePlaylistModalLabel">Confirmar Remoção</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Você tem certeza que deseja remover esta playlist?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger">Remover</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
 
 

@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth.models import User
-from list.models import  SkinUser,PlaylistUser,Playlist,Seguir
+from list.models import  SkinUser,PlaylistUser,Playlist,Seguir,FilmesAssistidos
 
 
 def meta(req):
@@ -20,21 +20,11 @@ def userProfile(req,pk):
 
      skins = SkinUser.objects.all()
      
-     lista = []
-     for p in play:
-    
-        lista.append(
-            {
-                'id': p.id,
-                'nome': p.play.nome,
-                'desc': p.play.desc
-            })
-            
-
-     print(lista)
-   
+     
+     assistido = FilmesAssistidos.objects.filter(usuario__id=req.user.id)
+     print('assistido ',assistido) 
      seguindo_ids = req.user.seguindo.values_list('followed_id', flat=True)
-     context = {'user':skin.usuario, 'skin':skin,'myaccount':False,'playlist':lista,'seguindo':seguindo_ids, 'skins':skins}
+     context = {'user':skin.usuario, 'skin':skin,'myaccount':False,'playlist':play,'seguindo':seguindo_ids, 'skins':skins,'assistido':assistido}
      
      if skin.usuario.pk == req.user.pk:
          context['myaccount'] = True    

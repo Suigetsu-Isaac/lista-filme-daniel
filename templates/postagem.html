@@ -187,7 +187,7 @@
                 
                 <span style="color:white">{{error}}</span>
               
-                <form class="comment-form" ation="/postagem" method="post">
+                <form class="comment-form" action="/criarpostagem/{{filme.id}}" method="post">
                     {%csrf_token%}
                     <textarea name="comentario" id="new-comment" class="form-control mb-3" placeholder="Adicione um comentário..." rows="4"></textarea>
                     <input name="nota" type="number" id="new-rating" class="form-control mb-3" min="1" max="5" placeholder="Nota (1-5)">

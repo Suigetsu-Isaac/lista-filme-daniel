@@ -4,16 +4,15 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from list.models import Filmes,SkinUser,Avaliacao, Seguir,LikeDislike
-@login_required(login_url="/login/")
+
 def index(req,context={}):
    
     ava = Avaliacao.objects.all()
-    myskin = SkinUser.objects.get(usuario__id = req.user.id)
+    
     filmes = Filmes.objects.all()
     context['filmes']=filmes
     allSkins = SkinUser.objects.all()
     print(ava)
-    
     
     for a in ava:
         a.like_count = a.likes_dislikes.filter(vote=1).count()
@@ -22,8 +21,13 @@ def index(req,context={}):
     print('\n\n\n ava',ava)
     avas = [a for a in ava]
     print('avas: ',avas) 
-    context['user'] = req.user
-    context['myskin'] = myskin
+
+    try:
+        myskin = SkinUser.objects.get(usuario__id = req.user.id)
+        context['user'] = req.user
+        context['myskin'] = myskin
+    except:
+        context['user'] = None
 
     
     print(context.get('ava'))
@@ -78,6 +82,7 @@ def getMovieInfo(req,pk):
         "duracao": filme.duracao,  
     }
     return JsonResponse(novoFilme)
+
 
 
 def avaliacaoSeguindo(req):

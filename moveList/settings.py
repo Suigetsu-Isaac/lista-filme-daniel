@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-4hli@&-r40bm9t@+k)_d--r&$1s4az@*xyqx^#jv%c4-tm24v^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['zeromanx.pythonanywhere.com','localhost','127.0.0.1']
 
 LOGIN_URL='/login/'
 # Application definition

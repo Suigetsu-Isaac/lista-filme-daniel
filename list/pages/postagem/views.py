@@ -8,8 +8,11 @@ from list.models import Avaliacao,Filmes,GeneroFilme,PlataformaStreamingFilme,Sk
 def meta(req):
     return req.META.get('HTTP_REFERER', '/')
 
+
 @login_required(login_url='/login/')
 def createPostagem(req,pk):
+    print('\n\n\nchegei\n\n\n',req,pk)
+
     context={}
     filme = Filmes.objects.get(id=pk)
     comentario = req.POST['comentario']
@@ -19,9 +22,9 @@ def createPostagem(req,pk):
         ava = Avaliacao.objects.create(comentario=comentario, nota=nota, filme=filme, skin=user)
     except:
         context['error'] = 'Avaliação já foi feita'
-    return redirect('postagem')
-
-def postagem(req,pk):
+    return postagem(req,pk,context)
+    
+def postagem(req,pk,context={}):
     filme = Filmes.objects.get(id=pk)     
     ava = Avaliacao.objects.filter(filme__id=pk)
     for a in ava:
@@ -33,11 +36,11 @@ def postagem(req,pk):
     print(ava)
     print(generos)
     print(plataformas)
-    context= {
+    context.update({
         'filme': filme,
         'avaliacao': ava,
         'generos' : generos,
         'plataformas':plataformas
-        }
+        }) 
    
     return render(req,'postagem.html',context)
