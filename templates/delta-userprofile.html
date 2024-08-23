@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Perfil do Usuário</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #040404;
@@ -16,7 +18,7 @@
         }
 
         .navbar {
-            background-color: #161513; /* Se usar um navbar, aplique bg-dark ao invés disso */
+            background-color: #161513;
         }
 
         .carousel-inner {
@@ -56,16 +58,9 @@
             border-color: #545b62;
         }
     </style>
-    <title>Document</title>
 </head>
+
 <body>
-
-
-    {%include 'navbar.html'%}
-
-  
-   
-
     <div class="container-fluid mt-5 container-custom">
         <div class="row justify-content-center">
             <div class="col-md-10">
@@ -74,15 +69,15 @@
                         <h3>Perfil do Usuário</h3>
                     </div>
                     <div class="card-body text-center">
-                        <img src="{{skin.img.url}}" alt="Foto do Perfil" width="150" height="150" class="rounded-circle mb-3">
-                        <h4>{{user}}</h4>
+                        <img src="https://via.placeholder.com/150" alt="Foto do Perfil" class="rounded-circle mb-3">
+                        <h4>Nome do Usuário</h4>
+                        <p class="text-muted">email@exemplo.com</p>
                         <hr>
 
                         <!-- Biografia -->
                         <h5>Biografia</h5>
-                        <p class="text-start">
-                           {{skin.bio}} 
-                            <hr>
+                        <p class="text-start">Esta é a biografia do usuário. Aqui, ele pode compartilhar algo sobre si mesmo, seus interesses e sua paixão por filmes.</p>
+                        <hr>
 
                         <!-- Playlists de Filmes -->
                         <h5>Playlists de Filmes</h5>
@@ -90,13 +85,11 @@
                             Adicionar Playlist
                         </button>
                         <div class="row">
-                            {%for p in playlist%}
-                            
                             <div class="col-md-4">
                                 <div class="card mb-3">
-                                    <div class="card-body bg-dark" style="border-radius: 5px;">
-                                        <h6 class="card-title">{{p.play.nome}}</h6>
-                                        <p class="card-text">{{p.play.desc}}</p>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Playlist 1</h6>
+                                        <p class="card-text">Descrição da Playlist 1.</p>
                                         <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editPlaylistModal">
                                             Editar
                                         </button>
@@ -106,7 +99,6 @@
                                     </div>
                                 </div>
                             </div>
-                            {%endfor%}
                             <!-- Adicione mais playlists conforme necessário -->
                         </div>
                         <hr>
@@ -118,14 +110,43 @@
                                 <div class="carousel-item active">
                                     <div class="d-flex flex-wrap justify-content-center">
                                         <div class="p-2">
-                                            {%for a in assistido %}
-                                            <img src="{{a.filme.cover.url}}" width='150' height='150' alt="Filme 1" class="img-fluid mb-2" style='border-radius: 5px'>
-                                            <p>{{a.filme}}</p>
-                                            {%endfor %}
+                                            <img src="https://via.placeholder.com/100" alt="Filme 1" class="img-fluid mb-2">
+                                            <p>Filme 1</p>
                                         </div>
-                                        
+                                        <div class="p-2">
+                                            <img src="https://via.placeholder.com/100" alt="Filme 2" class="img-fluid mb-2">
+                                            <p>Filme 2</p>
+                                        </div>
+                                        <div class="p-2">
+                                            <img src="https://via.placeholder.com/100" alt="Filme 3" class="img-fluid mb-2">
+                                            <p>Filme 3</p>
+                                        </div>
+                                        <div class="p-2">
+                                            <img src="https://via.placeholder.com/100" alt="Filme 4" class="img-fluid mb-2">
+                                            <p>Filme 4</p>
+                                        </div>
+                                    </div>
                                 </div>
-                               
+                                <div class="carousel-item">
+                                    <div class="d-flex flex-wrap justify-content-center">
+                                        <div class="p-2">
+                                            <img src="https://via.placeholder.com/100" alt="Filme 5" class="img-fluid mb-2">
+                                            <p>Filme 5</p>
+                                        </div>
+                                        <div class="p-2">
+                                            <img src="https://via.placeholder.com/100" alt="Filme 6" class="img-fluid mb-2">
+                                            <p>Filme 6</p>
+                                        </div>
+                                        <div class="p-2">
+                                            <img src="https://via.placeholder.com/100" alt="Filme 7" class="img-fluid mb-2">
+                                            <p>Filme 7</p>
+                                        </div>
+                                        <div class="p-2">
+                                            <img src="https://via.placeholder.com/100" alt="Filme 8" class="img-fluid mb-2">
+                                            <p>Filme 8</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <a class="carousel-control-prev" href="#carouselFilmesAssistidos" role="button" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -155,21 +176,37 @@
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
                                             <div class="d-flex flex-wrap justify-content-center">
-
-                                                {% for s in seguindo %}
-                                               
-                                                <form action="{% url 'desseguir' s.followed.id %}" method="post"class="p-2 text-center">
-                                                    {% csrf_token %}
-                                                    
-                                                    <img src="{{s.followed.img.url}}" width='100' height='100' alt="Usuário 1" class="rounded-circle mb-2">
-                                                    <h6 class="card-title">{{s.followed.usuario}}</h6>
-                                                    <button type="submit" class="btn btn-danger">Deixar de Seguir</button>
-                                                </form>
-                                                {%endfor%}
-                                                
+                                                <div class="p-2 text-center">
+                                                    <img src="https://via.placeholder.com/100" alt="Usuário 1" class="rounded-circle mb-2">
+                                                    <h6 class="card-title">Usuário 1</h6>
+                                                    <button class="btn btn-danger">Deixar de Seguir</button>
+                                                </div>
+                                                <div class="p-2 text-center">
+                                                    <img src="https://via.placeholder.com/100" alt="Usuário 2" class="rounded-circle mb-2">
+                                                    <h6 class="card-title">Usuário 2</h6>
+                                                    <button class="btn btn-danger">Deixar de Seguir</button>
+                                                </div>
+                                                <div class="p-2 text-center">
+                                                    <img src="https://via.placeholder.com/100" alt="Usuário 3" class="rounded-circle mb-2">
+                                                    <h6 class="card-title">Usuário 3</h6>
+                                                    <button class="btn btn-danger">Deixar de Seguir</button>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+                                        <div class="carousel-item">
+                                            <div class="d-flex flex-wrap justify-content-center">
+                                                <div class="p-2 text-center">
+                                                    <img src="https://via.placeholder.com/100" alt="Usuário 4" class="rounded-circle mb-2">
+                                                    <h6 class="card-title">Usuário 4</h6>
+                                                    <button class="btn btn-danger">Deixar de Seguir</button>
+                                                </div>
+                                                <div class="p-2 text-center">
+                                                    <img src="https://via.placeholder.com/100" alt="Usuário 5" class="rounded-circle mb-2">
+                                                    <h6 class="card-title">Usuário 5</h6>
+                                                    <button class="btn btn-danger">Deixar de Seguir</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <a class="carousel-control-prev" href="#carouselSeguindo" role="button" data-bs-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -188,30 +225,37 @@
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
                                             <div class="d-flex flex-wrap justify-content-center">
-                                                
-                                                {% for s in seguidores %}
-                                               
-                                                {% if s.follower.id not in seguindo_ids %}
-                                                <form action="{% url 'seguir' s.id %}" method="post" class="p-2 text-center">
-                                                    {% csrf_token %}
-                                                    <img src="{{s.follower.img.url}}" width='100' height='100' alt="Usuário 6" class="rounded-circle mb-2">
-                                                    <h6 class="card-title">{{s.follower.usuario}}</h6>
+                                                <div class="p-2 text-center">
+                                                    <img src="https://via.placeholder.com/100" alt="Usuário 6" class="rounded-circle mb-2">
+                                                    <h6 class="card-title">Usuário 6</h6>
                                                     <button class="btn btn-primary">Seguir</button>
-                                                </form>
-                                                {%else%}
-                                                <form action="{% url 'desseguir' s.follower.id %}" method="post"class="p-2 text-center">
-                                                    {% csrf_token %}
-                                                    
-                                                    <img src="{{s.follower.img.url}}" width='100' height='100' alt="Usuário 1" class="rounded-circle mb-2">
-                                                    <h6 class="card-title">{{s.follower.usuario}}</h6>
-                                                    <button type="submit" class="btn btn-danger">Deixar de Seguir</button>
-                                                </form>
-
-                                                {%endif%}
-                                                {%endfor%}
+                                                </div>
+                                                <div class="p-2 text-center">
+                                                    <img src="https://via.placeholder.com/100" alt="Usuário 7" class="rounded-circle mb-2">
+                                                    <h6 class="card-title">Usuário 7</h6>
+                                                    <button class="btn btn-primary">Seguir</button>
+                                                </div>
+                                                <div class="p-2 text-center">
+                                                    <img src="https://via.placeholder.com/100" alt="Usuário 8" class="rounded-circle mb-2">
+                                                    <h6 class="card-title">Usuário 8</h6>
+                                                    <button class="btn btn-primary">Seguir</button>
+                                                </div>
                                             </div>
                                         </div>
-                                        
+                                        <div class="carousel-item">
+                                            <div class="d-flex flex-wrap justify-content-center">
+                                                <div class="p-2 text-center">
+                                                    <img src="https://via.placeholder.com/100" alt="Usuário 9" class="rounded-circle mb-2">
+                                                    <h6 class="card-title">Usuário 9</h6>
+                                                    <button class="btn btn-primary">Seguir</button>
+                                                </div>
+                                                <div class="p-2 text-center">
+                                                    <img src="https://via.placeholder.com/100" alt="Usuário 10" class="rounded-circle mb-2">
+                                                    <h6 class="card-title">Usuário 10</h6>
+                                                    <button class="btn btn-primary">Seguir</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <a class="carousel-control-prev" href="#carouselSeguidores" role="button" data-bs-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -225,16 +269,19 @@
                             </div>
                         </div>
 
-                    <div class="card-footer text-center">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">Editar Perfil</button>
-                        <a href="#" class="btn btn-secondary">Logout</a>
+                        <!-- Botões de Ações -->
+                        <div class="mt-4 text-center">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">Editar Perfil</button>
+                            <a href="#" class="btn btn-secondary">Logout</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-<!-- Modal para Editar Perfil -->
+    <!-- Modais de Ações -->
+    <!-- Modal para Editar Perfil -->
     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -243,15 +290,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form  action="/users/{{skin.id|default:0}}" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
+                    <form>
                         <div class="mb-3">
                             <label for="profilePicture" class="form-label">Foto de Perfil</label>
-                            <input type="file" name="avatar" accept="image/png, image/jpeg" class="form-control" id="profilePicture">
+                            <input type="file" class="form-control" id="profilePicture">
                         </div>
                         <div class="mb-3">
                             <label for="editBio" class="form-label">Biografia</label>
-                            <textarea class="form-control" id="editBio" rows="3">{{skin.bio}}</textarea>
+                            <textarea class="form-control" id="editBio" rows="3">Esta é a biografia do usuário.</textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Salvar Alterações</button>
                     </form>
@@ -284,7 +330,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Modal para Editar Playlist -->
     <div class="modal fade" id="editPlaylistModal" tabindex="-1" aria-labelledby="editPlaylistModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -294,8 +340,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form >
-                       
+                    <form>
                         <div class="mb-3">
                             <label for="editPlaylistName" class="form-label">Nome da Playlist</label>
                             <input type="text" class="form-control" id="editPlaylistName" value="Nome da Playlist Atual">
@@ -331,26 +376,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-
-
-        function editPlaylist(dic){
-            form = document.querySelector('#editPlaylistForm')
-            nome = document.querySelector('#editnome')
-            desc = document.querySelector('#editdesc')
-            
-            console.log(form)
-            const url = 'editPlaylist/'
-            form.action = url + dic.id +'/'
-
-            nome.value = dic.nome
-            desc.value = dic.desc
-
-        }
-       
-    </script>
-    
-   {%include 'bootstrapJS.html'%}
 </body>
+
 </html>

@@ -23,8 +23,17 @@ def userProfile(req,pk):
      
      assistido = FilmesAssistidos.objects.filter(usuario__id=req.user.id)
      print('assistido ',assistido) 
-     seguindo_ids = req.user.seguindo.values_list('followed_id', flat=True)
-     context = {'user':skin.usuario, 'skin':skin,'myaccount':False,'playlist':play,'seguindo':seguindo_ids, 'skins':skins,'assistido':assistido}
+
+     user = SkinUser.objects.get(id=req.user.id)
+     seguindo = user.seguindo.values_list('followed', flat=True)
+     seguir = skins.exclude(id__in=seguindo).exclude(id=user.id)
+
+
+     seguindo_ids = set(user.seguindo.values_list('followed_id', flat=True))   
+
+     print('seguir',seguir)
+
+     context = {'user':skin.usuario, 'skin':skin,'myaccount':False,'playlist':play,'seguindo':user.seguindo.all(), 'seguidores':user.seguidores.all(), 'skins':skins, 'seguir':seguir,'seguindo_ids':seguindo_ids ,'assistido':assistido}
      
      if skin.usuario.pk == req.user.pk:
          context['myaccount'] = True    
@@ -86,13 +95,15 @@ def editPlaylist(req,pk):
 
 def seguir(req,pk):
 
-    user_to_follow = get_object_or_404(User, id=pk)
-    Seguir.objects.get_or_create(follower=req.user, followed=user_to_follow)
+    seguir = get_object_or_404(SkinUser, id=pk)
+    eu = get_object_or_404(SkinUser,usuario__id=req.user.id)
+    Seguir.objects.get_or_create(follower=eu, followed=seguir)
     return redirect(meta(req))
     
 def desseguir(req,pk):
-    user_to_unfollow = get_object_or_404(User, id=pk)
-    Seguir.objects.filter(follower=req.user, followed=user_to_unfollow).delete()
+    desseguir = get_object_or_404(SkinUser, id=pk)
+    eu = get_object_or_404(SkinUser,usuario__id=req.user.id)
+    Seguir.objects.filter(follower=eu, followed=desseguir).delete()
     return redirect(meta(req))
 
 

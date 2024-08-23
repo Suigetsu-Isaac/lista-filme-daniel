@@ -119,8 +119,8 @@ class LikeDislike(models.Model):
         unique_together = ('user', 'ava')
 
 class Seguir(models.Model):
-    follower = models.ForeignKey(User, related_name='seguindo' ,on_delete=models.CASCADE)
-    followed = models.ForeignKey(User, related_name='seguidores' ,on_delete=models.CASCADE)
+    follower = models.ForeignKey(SkinUser, related_name='seguindo' ,on_delete=models.CASCADE)
+    followed = models.ForeignKey(SkinUser, related_name='seguidores' ,on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
         unique_together = ('follower', 'followed')
