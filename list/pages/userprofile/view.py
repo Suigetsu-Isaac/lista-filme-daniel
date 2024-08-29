@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth.models import User
 from list.models import  SkinUser,PlaylistUser,Playlist,Seguir,FilmesAssistidos
-
+from django.template.defaulttags import register
 
 def meta(req):
     return req.META.get('HTTP_REFERER', '/')
@@ -13,18 +13,18 @@ def userProfile(req,pk):
         return postProfile(req,pk)
     else:
      print('pk:',pk)
-     play = PlaylistUser.objects.filter(user__id = req.user.id)    
-     
+     user = SkinUser.objects.get(id=pk)
+     play = PlaylistUser.objects.filter(user__id = user.usuario.id)    
      skin = SkinUser.objects.get(id=pk)
-     print(play)
+     print('playlist: ',play)
 
      skins = SkinUser.objects.all()
      
      
-     assistido = FilmesAssistidos.objects.filter(usuario__id=req.user.id)
+     assistido = FilmesAssistidos.objects.filter(usuario__id=pk)
      print('assistido ',assistido) 
 
-     user = SkinUser.objects.get(id=req.user.id)
+     
      seguindo = user.seguindo.values_list('followed', flat=True)
      seguir = skins.exclude(id__in=seguindo).exclude(id=user.id)
 
@@ -33,10 +33,19 @@ def userProfile(req,pk):
 
      print('seguir',seguir)
 
-     context = {'user':skin.usuario, 'skin':skin,'myaccount':False,'playlist':play,'seguindo':user.seguindo.all(), 'seguidores':user.seguidores.all(), 'skins':skins, 'seguir':seguir,'seguindo_ids':seguindo_ids ,'assistido':assistido}
-     
+     context = {'user':skin.usuario,
+                'skin':skin,
+                'can_edit':False,
+                'playlist':play,
+                'seguindo':user.seguindo.all(),
+                'seguidores':user.seguidores.all(),
+                'skins':skins,
+                'seguir':seguir,
+                'seguindo_ids':seguindo_ids,
+                'assistido':assistido,}
+        
      if skin.usuario.pk == req.user.pk:
-         context['myaccount'] = True    
+         context['can_edit'] = True    
     
      return render(req,'userprofile.html',context)
     
@@ -56,8 +65,8 @@ def postProfile(req,pk):
     print(pk)
     return redirect(meta(req))
 
-def addPlaylist(req,pk):
-    user = User.objects.get(id=pk)
+def addPlaylist(req):
+    user = User.objects.get(id=req.user.id)
     nome = req.POST['nome']
     desc = req.POST['desc']
     
@@ -72,13 +81,18 @@ def addPlaylist(req,pk):
         play = novo
     )
     
+    print(f'\n\n playlist nome {novo.nome} \n playlist descricao: {novo.desc}\n')
+    print(f'\n associacao usuario: {associacao.user}, associacao playlist: {associacao.play.id} ')
+    
     associacao.save()    
-    return redirect('index')
+    return redirect(meta(req))
 
 
 def removePlaylist(req,pk):
     playuser = PlaylistUser.objects.get(id=pk)
+    playlist = Playlist.objects.get(id=playuser.play.id)
     print(playuser.delete())
+    print(playlist.delete())
     return redirect(meta(req))
 
 
@@ -90,7 +104,7 @@ def editPlaylist(req,pk):
     playlist.desc = desc
     
     playlist.save()
-    return redirect('index')
+    return redirect(meta(req))
 
 
 def seguir(req,pk):
@@ -105,5 +119,3 @@ def desseguir(req,pk):
     eu = get_object_or_404(SkinUser,usuario__id=req.user.id)
     Seguir.objects.filter(follower=eu, followed=desseguir).delete()
     return redirect(meta(req))
-
-
