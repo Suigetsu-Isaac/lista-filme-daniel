@@ -61,7 +61,7 @@ class PlaylistUser(models.Model):
 class PlaylistFilme(models.Model):
     play = models.ForeignKey(PlaylistUser,on_delete= models.CASCADE)
     filme = models.ForeignKey(Filmes,on_delete=models.CASCADE)
-    
+    created_at = models.DateField(auto_now=True)
     def __str__(self):
         return self.play.user.__str__()+": "+self.play.play.nome + ' - ' + self.filme.nome
 
