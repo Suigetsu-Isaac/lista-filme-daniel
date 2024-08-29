@@ -1,17 +1,16 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <button class="navbar-toggler hidden-lg-up" type="button" data-bs-toggle="collapse"
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
             aria-label="Toggle navigation"></button>
-           
+
         <div class="collapse navbar-collapse" id="collapsibleNavId">
             <ul class="navbar-nav me-auto mt-2 mt-lg-0">
                 <li class="nav-item">
                     <a class="nav-link active" href="/" aria-current="page">Index
                         <span class="visually-hidden">(current)</span></a>
                 </li>
-                
-                
+                <!-- O conteúdo dinâmico será inserido aqui -->
             </ul>
             <form class="d-flex m-2 my-lg-0">
                 <input class="form-control me-sm-2" type="text" placeholder="Search" />
@@ -19,83 +18,66 @@
                     Search
                 </button>
             </form>
-
-    </ul>
-           
-            
+            <!-- Elementos dinâmicos serão adicionados aqui -->
         </div>
-
     </div>
-    
-      
-     
 </nav>
 
-
 <script>
-
-    function getNavBar(){
-        fetch('/navbar',{
-            method:'GET',
+    function getNavBar() {
+        fetch('/navbar', {
+            method: 'GET',
             headers: {
-            'Content-Type': 'application/json',
-        }
-        }).then(response => response.json())
-        .then(data => skinUser(data.id,data.img,data.user,data.bio))
-        .catch(data => skinUserDefault(data.user))
+                'Content-Type': 'application/json',
+            }
+        }).then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else if (response.status === 401) {
+                throw new Error('Usuário não logado');
+            } else if (response.status === 404) {
+                throw new Error('Skin do usuário não encontrada');
+            }
+        }).then(data => {
+            skinUser(data.id, data.img, data.user);
+        }).catch(() => {
+            skinUserDefault();
+        });
     }
-    
-    let navId = document.querySelector('#collapsibleNavId')
-    console.log(navId)
 
-    function skinUserDefault(user){
-            const userDefaultHTML = `
-            <a
-                href="/login"
-                class="btn btn-primary active"
-                role="button"
-                >
-                Faça seu Login
-                </a
-                >
-            `
+    let navId = document.querySelector('#collapsibleNavId');
 
-           
+    function skinUserDefault() {
+        const userDefaultHTML = `
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a href="/login" class="btn btn-primary active" role="button">
+                        Faça seu Login
+                    </a>
+                </li>
+            </ul>
+        `;
+        navId.innerHTML += userDefaultHTML;
+    }
 
-            console.log(userDefaultHTML)
-            navId.innerHTML += userDefaultHTML
-        }
-
-    function skinUser(id,img,user,bio){
+    function skinUser(id, img, user) {
         const userHTML = `
-                <ul class="navbar-nav me-auto mt-2 mt-lg-0" style="width: 30vw; justify-content: right;">
-                <li class="nav-item dropdown" style="display: flex; justify-content: right; align-items: center;">
-                    <a class="nav-link dropdown-toggle" style="text-decoration: none;" href="#" id="dropdownId" data-bs-toggle="dropdown"
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                    
-                            
-
-                            <img class="fir-author-image fir-clickcircle " src='${img}'  style='border-radius: 2em;' width='32px' height='32px' alt="Imagem do usuario">
-                              
-                            <label class="fig-author-figure-title">${user}</label>
-                                  
-                           
-                             
+                        <img class="fir-author-image fir-clickcircle" src='${img}' style='border-radius: 2em;' width='32px' height='32px' alt="Imagem do usuário">
+                        <label class="fig-author-figure-title" style='cursor: pointer'>${user}</label>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownId">
                         <a class="dropdown-item" href="/users/${id}">Meu Perfil</a>
                         <a class="dropdown-item" href="/logout/">Desconectar</a>
                     </div>
                 </li>
-            
             </ul>
-            `
-            console.log(userHTML)
-            navId.innerHTML+=userHTML
+        `;
+        navId.innerHTML += userHTML;
     }
-    getNavBar()
-    
 
-
-
+    getNavBar();
 </script>

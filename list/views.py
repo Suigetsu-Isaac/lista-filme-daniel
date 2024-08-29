@@ -136,20 +136,17 @@ def ava_counts(request, ava_id):
     return JsonResponse({'likes': likes, 'dislikes': dislikes})
 
 def navbar(req):
-    
-    try:
-        myskin = SkinUser.objects.get(usuario__id=req.user.id)
-        print('myskin',myskin)
-        dic = {
-            'id': myskin.id,
-            'img': myskin.img.url,
-            'user': myskin.usuario.username,
-            'bio': myskin.bio
-        }
-        print('dic',dic)
-
-        return JsonResponse(dic)
-    except:
-        
-        return JsonResponse({'user':None})
-    
+    if req.user.is_authenticated:
+        try:
+            myskin = SkinUser.objects.get(usuario=req.user)
+            dic = {
+                'id': myskin.id,
+                'img': myskin.img.url,
+                'user': myskin.usuario.username,
+                'bio': myskin.bio
+            }
+            return JsonResponse(dic)
+        except SkinUser.DoesNotExist:
+            return JsonResponse({'user': None}, status=404)  # Retornar 404 se a skin não for encontrada
+    else:
+        return JsonResponse({'error': 'Usuário não autenticado'}, status=401)  # Retornar 401 Unauthorized se o usuário não estiver logado

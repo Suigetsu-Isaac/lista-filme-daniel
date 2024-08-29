@@ -10,6 +10,10 @@
             color: white;
             transition: 200ms;
         }
+        body {
+            background-color: #040404;
+            color: white;
+        }
         p{
             color:white;
         }
@@ -114,10 +118,7 @@
     
 
 {% include 'navbar.html' %}
-{{filme}}
-{{avaliacao}}
-{{generos}}
-{{plataformas}}
+
     <main class="containerInner py-2 d-flex justify-content-center" style="width: 80vw;">
         <div class="row text-white py-2 rounded-2" style="background-color: #161513; width: 100vw; justify-content: space-evenly; border-radius: 10px;">
           <div class="row mx-2 px-2">
@@ -134,9 +135,7 @@
               </div>
               
                 <div class="col justify-content-center" style=" background-color: #161513; color:white;  text-align: justify; flex-grow: 2; font-size: large; color:black; border-top-right-radius: 10px; " >
-                    
-                    {{filme.count_avaliacoes}}
-                    {{filme.media_notas}}
+    
                     
                 <p><b>Sinopse</b>  </p>
                 <span style="font-size: medium; text-align: justify;">{{filme.sinopse}}</span>
