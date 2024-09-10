@@ -218,6 +218,32 @@
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">Editar Perfil</button>
                             
                             <a href="/logout/" class="btn btn-secondary">Logout</a>
+                            {% else %}
+
+                                <!-- Faça a opção de Seguir ou Desseguir o usuario -->
+                           
+                                {% if pk in seguindo_ids %}
+
+                                <form action="{% url 'desseguir' pk %}" method="post" class="mt-2">
+                                    <button type="submit" class="btn btn-danger">Deixar de Seguir</button>
+                                    {% csrf_token %}
+                                </form>
+                                
+                            
+                            
+                                {%else%}
+                           
+                                
+                                <form action="{% url 'seguir' pk %}" method="post" class="mt-2">
+                                    <button type="submit" class="btn btn-primary">Seguir</button>
+                                    {% csrf_token %}
+                                </form>
+
+                                {%endif%}
+
+
+                                
+                                
                             {% endif %}
                         </div>
                     </div>

@@ -88,7 +88,7 @@
               <div class="col-md-10">
                   <div class="card-body">
                       <h5 class="card-title">{{p.filme.nome}}</h5>
-                      <p class="card-text">⭐ {{p.filme.media_notas}} ({{p.filme.count_avaliacoes}}) | {{p.filme.duracao}} minutos</p>
+                      <p class="card-text">⭐ {{p.filme.media_notas|floatformat:1|default:0.0}} ({{p.filme.count_avaliacoes}}) | {{p.filme.duracao}} minutos</p>
                       <a href="/postagem/{{p.filme.id}}" class="card-link">Avaliar</a>
                       <p class="card-text mt-3"><small class="text-muted">Adicionado em {{p.created_at}}</small></p>
                       <a href="/removeFilmeFromPlaylist/{{p.id}}" class="btn btn-danger">Remover</a>

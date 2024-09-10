@@ -13,36 +13,43 @@ def userProfile(req,pk):
         return postProfile(req,pk)
     else:
      print('pk:',pk)
-     user = SkinUser.objects.get(id=pk)
-     play = PlaylistUser.objects.filter(user__id = user.usuario.id)    
      skin = SkinUser.objects.get(id=pk)
+     play = PlaylistUser.objects.filter(user__id = skin.usuario.id)    
+     user = SkinUser.objects.get(usuario__id = req.user.id)
      print('playlist: ',play)
-
+    
+     print(user)
      skins = SkinUser.objects.all()
+     
+     
+     
      
      
      assistido = FilmesAssistidos.objects.filter(usuario__id=pk)
      print('assistido ',assistido) 
 
      
-     seguindo = user.seguindo.values_list('followed', flat=True)
-     seguir = skins.exclude(id__in=seguindo).exclude(id=user.id)
+     seguindo = skin.seguindo.values_list('followed', flat=True)
+     seguir = skins.exclude(id__in=seguindo).exclude(id=skin.id)
 
 
      seguindo_ids = set(user.seguindo.values_list('followed_id', flat=True))   
-
+     print(seguindo_ids)
+     print(seguindo)
      print('seguir',seguir)
 
      context = {'user':skin.usuario,
                 'skin':skin,
                 'can_edit':False,
                 'playlist':play,
-                'seguindo':user.seguindo.all(),
-                'seguidores':user.seguidores.all(),
+                'seguindo':skin.seguindo.all(),
+                'seguidores':skin.seguidores.all(),
                 'skins':skins,
                 'seguir':seguir,
                 'seguindo_ids':seguindo_ids,
-                'assistido':assistido,}
+                'assistido':assistido,
+                'pk':int(pk)
+                }
         
      if skin.usuario.pk == req.user.pk:
          context['can_edit'] = True    
