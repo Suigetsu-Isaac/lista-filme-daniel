@@ -31,7 +31,7 @@
             background-color: rgba(0, 0, 0, 0.2);
             flex:1;
           
-            border-radius: 10px;
+            
         }
         #bg-img:hover{
             background-color: rgba(0, 0, 0, 0.05);
@@ -63,7 +63,7 @@
     <title>Document</title>
 </head>
 
-<body>
+<body   >
 
 {% include 'navbar.html' %}
 
@@ -75,22 +75,20 @@
     <div class="card grid-item d-flex" style="width: 30vw; height: 60vh; justify-content: space-evenly; background-color: #161513; border-radius: 10px;">
 
         
-        <a href="/postagem/{{f.id}}" id='ladoE' class="col" style="background-image: url({{f.cover.url}}); background-size: cover;  display: flex; height: 300px; border-radius: 10px;" >
+        
+        <div id='ladoE' class="col" style="background-image: url({{f.cover.url}}); background-size: cover;  display: flex; height: 300px; border-radius: 10px;" >
             
-            <div id="bg-img">
+            <a  href="/postagem/{{f.id}}" id="bg-img" style="border-bottom-left-radius: 10px; border-top-left-radius: 10px;">
+           
                 
+            </a>
         
-            </div>
-            
-          
-        
-        </a>
+        </div>
     
     <aside style="color:white; align-items: center; justify-content: center; padding: 4px;">
         
         <div style="display: flex;justify-content: space-evenly; margin-top: 4px; margin-bottom: 4px;">
-            <span> Comentario {{f.count_avaliacoes}}</span>
-        <span> Nota {{f.media_notas|default:0}}</span>
+            <span> ⭐ {{f.media_notas|floatformat:1|default:0.0}} ({{f.count_avaliacoes}}) </span>
         </div>
 
         <div style="margin-top: 8px;">
