@@ -132,21 +132,21 @@
                             {% for p in playlist %}
                             
                             <div class="col-md-4">
-                                <div class="card mb-3">
-                                    <a href="/getAllMoviesByPlayList/{{p.id}}" class="card-body bg-dark" style="border-radius: 5px;">
-                                       
+                                <div class="card mb-3 card-body bg-dark">
+                                    <a href="/getAllMoviesByPlayList/{{p.id}}" class="" style="border-radius: 5px;">
                                         <h6 class="card-title">{{p.play.nome}}</h6>
                                         <p class="card-text">{{p.play.desc}}</p>
-                                    
-                                        {% if can_edit %}
-                                        <button button type="button" class="btn btn-warning me-2" onclick="editPlaylist({{ p.play.id }}, '{{ p.play.nome }}', '{{ p.play.desc }}')" data-bs-toggle="modal" data-bs-target="#editPlaylistModal">
+                                    </a>
+                                    {% if can_edit %}
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-warning me-2" onclick="event.stopPropagation(); editPlaylist({{ p.play.id }}, '{{ p.play.nome }}', '{{ p.play.desc }}')" data-bs-toggle="modal" data-bs-target="#editPlaylistModal">
                                             Editar
                                         </button>
-                                        <button type="button" class="btn btn-danger" onclick="removePlaylist({{ p.play.id }})" data-bs-toggle="modal" data-bs-target="#deletePlaylistModal">
+                                        <button type="button" class="btn btn-danger" onclick="event.stopPropagation(); removePlaylist({{ p.play.id }})" data-bs-toggle="modal" data-bs-target="#deletePlaylistModal">
                                             Remover
                                         </button>
-                                        {% endif %}
-                                    </a>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         

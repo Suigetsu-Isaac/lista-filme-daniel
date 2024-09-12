@@ -136,12 +136,23 @@
               
                 <div class="col justify-content-center" style=" background-color: #161513; color:white;  text-align: justify; flex-grow: 2; font-size: large; color:black; border-top-right-radius: 10px; " >
     
-                    
+                {% if request.user.id %}
+                {% if assisti %}
+                <form action="/filmeDesassistido/{{filme.id}}" style="display: flex; justify-content: right;">
+                    <button class="btn btn-sm btn-outline-danger me-1" style="color: white;" type="submit"> Retirar Filme Assistido </button>     
+                </form>
+                {%else%}
+                <form action="/filmeAssistido/{{filme.id}}" style="display: flex; justify-content: right;">
+                    <button class="btn btn-sm btn-outline-success me-1" style="color: white;" type="submit"> Adicionar a Filme Assistido </button>     
+                </form>
+                {%endif%}
+                {%endif%}  
+                
                 <p><b>Sinopse</b>  </p>
                 <span style="font-size: medium; text-align: justify;">{{filme.sinopse}}</span>
                 <p> <b> Genero </b> </p>
                     {% for g in generos.all%}
-                     <span>  {{g.genero|default:"Não foi definido nenhum genero "}} / </span> 
+                     <span >  {{g.genero|default:"Não foi definido nenhum genero "}} / </span> 
                     {%endfor%}
                     
                 

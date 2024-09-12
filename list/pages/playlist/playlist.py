@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from list.models import Filmes,PlaylistFilme,PlaylistUser,FilmesAssistidos
+from list.models import Filmes,PlaylistFilme,PlaylistUser,FilmesAssistidos,SkinUser
 from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -58,7 +58,7 @@ def removeFilmeFromPlaylist(req,pk):
 
 def addFilmeAssistido(req,pk):
     filme = Filmes.objects.get(id=pk)
-    user = User.objects.get(username=req.user)
+    user = SkinUser.objects.get(usuario_id=req.user.id)
     assistido = FilmesAssistidos(
         filme = filme,
         usuario = user
@@ -70,7 +70,8 @@ def addFilmeAssistido(req,pk):
 
 
 def removeFilmeAssistido(req,pk):
-    assistido = FilmesAssistidos.objects.get(filme__id=pk,usuario__username=req.user)
+    skin = SkinUser.objects.get(usuario_id = req.user.id)
+    assistido = FilmesAssistidos.objects.get(filme__id=pk,usuario=skin)
     print(assistido)
     assistido.delete()
     return redirect(req.META.get('HTTP_REFERER', '/'))

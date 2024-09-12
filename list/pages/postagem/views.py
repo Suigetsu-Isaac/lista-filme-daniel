@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from list.models import Avaliacao,Filmes,GeneroFilme,PlataformaStreamingFilme,SkinUser
+from list.models import Avaliacao,Filmes,GeneroFilme,PlataformaStreamingFilme,SkinUser,FilmesAssistidos
 
 def meta(req):
     return req.META.get('HTTP_REFERER', '/')
@@ -36,11 +36,23 @@ def postagem(req,pk,context={}):
     print(ava)
     print(generos)
     print(plataformas)
+    
+    try:
+        assisti = FilmesAssistidos.objects.filter(usuario__id = req.user.id)
+        assisti = assisti.values_list('filme',flat=True)
+        if filme.id in assisti:
+            assisti = True
+        else:
+            assisti = False
+        
+    except:
+        assisti = None
     context.update({
         'filme': filme,
         'avaliacao': ava,
         'generos' : generos,
-        'plataformas':plataformas
+        'plataformas':plataformas,
+        'assisti': assisti
         }) 
    
     return render(req,'postagem.html',context)
