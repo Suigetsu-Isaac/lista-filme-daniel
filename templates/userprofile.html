@@ -11,22 +11,23 @@
             color: white;
         }
 
+        
         .card {
             background-color: #161513;
             color: white;
         }
-        /* 
-        .navbar {
-            background-color: #161513; Se usar um navbar, aplique bg-dark ao invés disso 
-        }
-            */
+      
 
         .carousel-inner {
             color: white;
         }
 
+        .btn-close-custom {
+            filter: invert(1);
+          }
+
         .modal-content {
-            background-color: #161513;
+            background-color: #212529;
             color: white;
         }
 
@@ -36,16 +37,6 @@
 
         .modal-body {
             border-top: 1px solid #444;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #004085;
         }
 
         .btn-secondary {
@@ -86,12 +77,26 @@
         
         a {
             text-decoration: none;
-            color: white;
+            color: rgba(255, 255, 255, 0.9);
         }
-        a:hover {
+        a:hover{
+            
+            transition: 300ms;
+            color: rgba(255, 255, 255, 1);
+        }
+        #play:hover {
             color: white;
             font-weight: bold;
             transition: 500ms;
+            text-decoration: none;
+        }
+       
+        .nav-link {
+            color: white
+        }
+        .nav-link:hover{
+            transition: 500ms;
+            color: white
         }
     </style>
     <title>Document</title>
@@ -123,26 +128,22 @@
                         <hr>
 
                         <h5>Playlists de Filmes</h5>
-                        {% if can_edit %}
-                        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addPlaylistModal">
-                            Adicionar Playlist
-                        </button>
-                        {% endif %}
+                        
                         <div class="row">
                             {% for p in playlist %}
                             
                             <div class="col-md-4">
                                 <div class="card mb-3 card-body bg-dark">
-                                    <a href="/getAllMoviesByPlayList/{{p.id}}" class="" style="border-radius: 5px;">
+                                    <a href="/getAllMoviesByPlayList/{{p.id}}" class="" id='play' style="border-radius: 5px;">
                                         <h6 class="card-title">{{p.play.nome}}</h6>
                                         <p class="card-text">{{p.play.desc}}</p>
                                     </a>
                                     {% if can_edit %}
                                     <div class="card-footer">
-                                        <button type="button" class="btn btn-warning me-2" onclick="event.stopPropagation(); editPlaylist({{ p.play.id }}, '{{ p.play.nome }}', '{{ p.play.desc }}')" data-bs-toggle="modal" data-bs-target="#editPlaylistModal">
+                                        <button type="button" class="btn btn-sm btn-warning me-1" onclick="event.stopPropagation(); editPlaylist({{ p.play.id }}, '{{ p.play.nome }}', '{{ p.play.desc }}')" data-bs-toggle="modal" data-bs-target="#editPlaylistModal">
                                             Editar
                                         </button>
-                                        <button type="button" class="btn btn-danger" onclick="event.stopPropagation(); removePlaylist({{ p.play.id }})" data-bs-toggle="modal" data-bs-target="#deletePlaylistModal">
+                                        <button type="button" class="btn btn-sm btn-danger me-1" onclick="event.stopPropagation(); removePlaylist({{ p.id }})" data-bs-toggle="modal" data-bs-target="#deletePlaylistModal">
                                             Remover
                                         </button>
                                     </div>
@@ -152,6 +153,11 @@
                         
                             {% endfor %}
                         </div>
+                        {% if can_edit %}
+                        <button type="button" class="btn btn-md btn-success me-1 mb-3" data-bs-toggle="modal" data-bs-target="#addPlaylistModal">
+                            Adicionar Playlist
+                        </button>
+                        {% endif %}
                         <hr>
 
                         <h5>Filmes Assistidos</h5>
@@ -215,17 +221,19 @@
 
                         <div class="card-footer text-center">
                             {% if can_edit %}
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">Editar Perfil</button>
+                            <button type="button" class="btn btn-md btn-success me-1 mb-3" data-bs-toggle="modal" data-bs-target="#editProfileModal">Editar Perfil</button>
                             
-                            <a href="/logout/" class="btn btn-secondary">Logout</a>
+                            <a href="/logout/" class="btn btn-md btn-secondary me-1 mb-3">Logout</a>
                             {% else %}
 
                                 <!-- Faça a opção de Seguir ou Desseguir o usuario -->
+                                 
+                                 {% if seguindo_ids != None%}
                            
                                 {% if pk in seguindo_ids %}
 
                                 <form action="{% url 'desseguir' pk %}" method="post" class="mt-2">
-                                    <button type="submit" class="btn btn-danger">Deixar de Seguir</button>
+                                    <button type="submit" class="btn btn-sm btn-danger me-1 mb-3">Deixar de Seguir</button>
                                     {% csrf_token %}
                                 </form>
                                 
@@ -235,13 +243,13 @@
                            
                                 
                                 <form action="{% url 'seguir' pk %}" method="post" class="mt-2">
-                                    <button type="submit" class="btn btn-primary">Seguir</button>
+                                    <button type="submit" class="btn btn-sm btn-success me-1 mb-3">Seguir</button>
                                     {% csrf_token %}
                                 </form>
 
                                 {%endif%}
 
-
+                                {%endif%}
                                 
                                 
                             {% endif %}
@@ -258,7 +266,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editProfileModalLabel">Editar Perfil</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form  action="/users/{{skin.id|default:0}}" method="post" enctype="multipart/form-data">
@@ -271,7 +279,7 @@
                             <label for="editBio" class="form-label">Biografia</label>
                             <textarea class="form-control" id="editBio" rows="3">{{skin.bio}}</textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        <button type="submit" class="btn btn-success">Salvar Alterações</button>
                     </form>
                 </div>
             </div>
@@ -284,7 +292,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addPlaylistModalLabel">Adicionar Playlist</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="/addPlaylist/" method="post">
@@ -297,7 +305,7 @@
                             <label for="playlistDescription" class="form-label">Descrição</label>
                             <textarea class="form-control" name="desc" id="playlistDescription" rows="3" placeholder="Descrição da Playlist"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <button type="submit" class="btn btn-success">Salvar</button>
                     </form>
                 </div>
             </div>
@@ -310,7 +318,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editPlaylistModalLabel">Editar Playlist</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action='' id="editPlaylistForm" method='post'>
@@ -323,7 +331,7 @@
                             <label for="editPlaylistDescription" class="form-label">Descrição</label>
                             <textarea class="form-control" id="editPlaylistDescription" name='desc' rows="3">Descrição Atual</textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        <button type="submit" class="btn btn-success">Salvar Alterações</button>
                     </form>
                 </div>
             </div>
@@ -336,7 +344,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deletePlaylistModalLabel">Confirmar Remoção</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>Você tem certeza que deseja remover esta playlist?</p>
@@ -398,7 +406,7 @@
                 </a>
                 {% if can_edit %}
                 ${item.isFollowing !== undefined ? `<form action="${item.actionUrl}" method="post" class="mt-2">
-                    ${item.isFollowing ? '<button type="submit" class="btn btn-danger">Deixar de Seguir</button>' : '<button type="submit" class="btn btn-primary">Seguir</button>'}
+                    ${item.isFollowing ? '<button type="submit" class="btn btn-sm btn-danger me-1">Deixar de Seguir</button>' : '<button type="submit" class="btn btn-sm btn-success me-1">Seguir</button>'}
                     {% csrf_token %}
                 </form>` : ''}
                 {%endif%}

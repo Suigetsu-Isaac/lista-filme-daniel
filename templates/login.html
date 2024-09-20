@@ -18,7 +18,7 @@
             margin: 0;
             padding: 0;
         }
-
+        
         .container {
             display: flex;
             justify-content: center;
@@ -32,8 +32,8 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            width: 100%;
-            max-width: 800px;
+            width: 40vw;
+            max-width: 900px;
         }
 
         .card-title {
@@ -73,20 +73,23 @@
         }
 
         .card-link {
-            color: #007bff;
+            color: rgba(255,255,255,0.9);
             text-align: center;
             display: block;
             margin-top: 10px;
+            text-decoration: none;
         }
 
         .card-link:hover {
-            color: #0056b3;
+            transition: 300ms;
+            color: rgba(255,255,255,1);
             text-decoration: underline;
         }
 
         @media (max-width: 767.98px) {
             .card {
                 padding: 20px;
+                width: 50vw;
             }
         }
     </style>
@@ -95,7 +98,7 @@
 <body>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-10 col-md-12">
+            <div>
                 <div class="card">
                     <h2 class="card-title">Login</h2>
                     {% if error_message %}

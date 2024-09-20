@@ -14,6 +14,9 @@
           background-color: #040404;
           color: white;
       }
+      #container {
+        background-color: #212529;
+      }
       a {
         color: rgba(255, 255, 255, 0.9);
         text-decoration: none;
@@ -40,16 +43,7 @@
           color: white;
           border: 1px solid #6c757d;
       }
-      .dropdown-menu {
-          background-color: #161513;
-          color: white;
-      }
-      .dropdown-item {
-          color: white;
-      }
-      .dropdown-item:hover {
-          background-color: #5a6268;
-      }
+      
       .suggestions {
           max-height: 200px;
           overflow-y: auto;
@@ -59,7 +53,14 @@
           padding: 5px;
       }
       .suggestion-item:hover {
-          background-color: #5a6268;
+          background-color: #161513;
+      }
+      #img-link {
+        opacity: 0.9;
+      }
+      #img-link:hover {
+        transition: 300ms;
+        opacity: 1;
       }
     </style>
     <title>Document</title>
@@ -70,7 +71,7 @@
 
 
     <!-- Frontend  -->
-    <div class="container mt-4">
+    <div id="container" class="container card mt-4 py-2">
       
       <h2>{{playuser.play.nome}}</h2>
 
@@ -89,9 +90,11 @@
 {% for p in playlist %}
 
       <div class="card">
-          <div class="row g-0">
+          <div class="row g-2">
               <div class="col-md-2">
+                <a href="/postagem/{{p.filme.id}}" id="img-link">
                   <img src="{{p.filme.cover.url}}" class="img-fluid rounded-start" alt="Poster do Filme">
+                </a>
               </div>
               <div class="col-md-10">
                   <div class="card-body">
@@ -99,7 +102,10 @@
                       <p class="card-text">⭐ {{p.filme.media_notas|floatformat:1|default:0.0}} ({{p.filme.count_avaliacoes}}) | {{p.filme.duracao}} minutos</p>
                       <a href="/postagem/{{p.filme.id}}" class="card-link">Avaliar</a>
                       <p class="card-text mt-3"><small class="text-muted">Adicionado em {{p.created_at}}</small></p>
+
+                      {% if p.play.user == request.user %}
                       <a href="/removeFilmeFromPlaylist/{{p.id}}" class="btn btn-danger">Remover</a>
+                      {%endif%}
                   </div>
               </div>
           </div>
@@ -112,7 +118,7 @@
     <script>
       document.getElementById('searchInput').addEventListener('input', function() {
         const query = this.value;
-        const playlistId = '{{playuser.play.id}}';  // Assuming this is passed to your template
+        const playlistId = '{{playuser.id}}';  // Assuming this is passed to your template
         console.log(playlistId)
         if (query.length > 0) {  
           fetch(`/search_movies/?query=${query}&playlist_id=${playlistId}`)

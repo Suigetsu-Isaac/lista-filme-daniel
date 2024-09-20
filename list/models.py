@@ -7,7 +7,7 @@ class Filmes(models.Model):
     nome = models.CharField(max_length=100)
     duracao = models.IntegerField()
     cover = models.ImageField(null=True, blank=True, upload_to='images/',default='/images/filme-default.png' )
-    sinopse = models.CharField(max_length=255)
+    sinopse = models.CharField(max_length=350)
     def __str__(self):
         return self.nome
 
@@ -39,14 +39,14 @@ class PlataformaStreaming(models.Model):
 class PlataformaStreamingFilme(models.Model):
     filme = models.ForeignKey(Filmes,on_delete=models.CASCADE)
     plataforma = models.ForeignKey(PlataformaStreaming,on_delete=models.CASCADE)
-    urlFilme= models.CharField(max_length=100)
+    urlFilme= models.CharField(max_length=150)
     def __str__(self):
         return self.filme.__str__()+" - "+self.plataforma.__str__()+' se encontra em: '+self.urlFilme
 
 
 class Playlist(models.Model):
     nome = models.CharField(max_length=100)
-    desc = models.CharField(max_length=255)
+    desc = models.CharField(max_length=350)
     
     def __str__(self):
         return self.nome + "\n" + self.desc
@@ -69,7 +69,7 @@ class PlaylistFilme(models.Model):
 class SkinUser(models.Model):
     usuario = models.OneToOneField(User,on_delete=models.CASCADE)
     img = models.ImageField(null=True, blank=True, upload_to='images/',default='/images/profile-default.png')
-    bio = models.CharField(max_length=255, default=f"Olá gosto de variados generos de filmes e quero conhecer novos amigos")
+    bio = models.CharField(max_length=350, default=f"Olá gosto de variados generos de filmes e quero conhecer novos amigos")
     
     def __str__(self):
         return f'{self.usuario} - {self.img.name} in {self.img.url}'
@@ -90,7 +90,7 @@ class FilmesAssistidos(models.Model):
 
 
 class Avaliacao(models.Model):
-    comentario = models.CharField(max_length=255)
+    comentario = models.CharField(max_length=350)
     nota = models.IntegerField() 
     filme = models.ForeignKey(Filmes,on_delete=models.CASCADE,related_name='avaliacoes')
     skin = models.ForeignKey(SkinUser,on_delete=models.CASCADE, null=True)

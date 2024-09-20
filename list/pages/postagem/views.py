@@ -22,9 +22,12 @@ def createPostagem(req,pk):
         ava = Avaliacao.objects.create(comentario=comentario, nota=nota, filme=filme, skin=user)
     except:
         context['error'] = 'Avaliação já foi feita'
-    return postagem(req,pk,context)
+    
+    postagem(req,pk,context)
+    return redirect(meta(req))
     
 def postagem(req,pk,context={}):
+    
     filme = Filmes.objects.get(id=pk)     
     ava = Avaliacao.objects.filter(filme__id=pk)
     for a in ava:
@@ -38,7 +41,9 @@ def postagem(req,pk,context={}):
     print(plataformas)
     
     try:
-        assisti = FilmesAssistidos.objects.filter(usuario__id = req.user.id)
+        sk = SkinUser.objects.get(usuario__id = req.user.id)
+        assisti = FilmesAssistidos.objects.filter(usuario = sk)
+        print('\n\n assiti',assisti)
         assisti = assisti.values_list('filme',flat=True)
         if filme.id in assisti:
             assisti = True
@@ -52,7 +57,29 @@ def postagem(req,pk,context={}):
         'avaliacao': ava,
         'generos' : generos,
         'plataformas':plataformas,
-        'assisti': assisti
+        'assisti': assisti,
+        'range': range(1,6)
         }) 
    
     return render(req,'postagem.html',context)
+
+def removerPostagem(req,pk):
+    ava = Avaliacao.objects.get(id=pk)
+
+    ava.delete()
+
+    return redirect(meta(req))
+
+def editarPostagem(req,pk):
+    
+    ava = Avaliacao.objects.get(id=pk)
+    
+    comentario = req.POST['comentario']
+    nota = int(req.POST['nota'])
+    
+    
+    ava.comentario = comentario
+    ava.nota = nota
+    ava.save()
+    
+    return redirect(meta(req))

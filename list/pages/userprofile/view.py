@@ -15,10 +15,16 @@ def userProfile(req,pk):
      print('pk:',pk)
      skin = SkinUser.objects.get(id=pk)
      play = PlaylistUser.objects.filter(user__id = skin.usuario.id)    
-     user = SkinUser.objects.get(usuario__id = req.user.id)
+     try:
+        user = SkinUser.objects.get(usuario__id = req.user.id)
+        seguindo_ids = set(user.seguindo.values_list('followed_id', flat=True))
+     except:
+         user=None
+         seguindo_ids = None 
      print('playlist: ',play)
     
      print(user)
+     print(seguindo_ids)
      skins = SkinUser.objects.all()
      
      
@@ -33,7 +39,7 @@ def userProfile(req,pk):
      seguir = skins.exclude(id__in=seguindo).exclude(id=skin.id)
 
 
-     seguindo_ids = set(user.seguindo.values_list('followed_id', flat=True))   
+       
      print(seguindo_ids)
      print(seguindo)
      print('seguir',seguir)
@@ -87,11 +93,11 @@ def addPlaylist(req):
         user = user,
         play = novo
     )
+    associacao.save()    
     
     print(f'\n\n playlist nome {novo.nome} \n playlist descricao: {novo.desc}\n')
-    print(f'\n associacao usuario: {associacao.user}, associacao playlist: {associacao.play.id} ')
+    print(f'\n associacao usuario: {associacao.user}, associacao playlist: {associacao.play.id}, associacao playlist user id: {associacao.id}')
     
-    associacao.save()    
     return redirect(meta(req))
 
 
